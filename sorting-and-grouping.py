@@ -1,4 +1,5 @@
 import csv
+import itertools
 
 
 def read_portfolio(filename, *, errors='warn'):
@@ -30,7 +31,7 @@ def read_portfolio(filename, *, errors='warn'):
                 else:
                     pass
                 continue
-            #record = tuple(row)
+            # record = tuple(row)
             record = {
                 'name': row[0],
                 'date': row[1],
@@ -41,13 +42,16 @@ def read_portfolio(filename, *, errors='warn'):
     return portfolio
 
 
-portfolio = read_portfolio('Data/portfolio.csv', errors='warn')
-print(portfolio)
+if __name__ == '__main__':
+    portfolio = read_portfolio('Data/portfolio.csv', errors='warn')
+    print(portfolio)
 
-total = sum([holding['shares']*holding['price'] for holding in portfolio])  # Constructs a list of all results and sums results
+    portfolio.sort(key=lambda holding: holding['name'])
 
-names = [holding['name'] for holding in portfolio] # Selects all names in the portfolio
-print(names)
+    for holding in portfolio:
+        print(holding)
 
-uniqueNames = { holding['name'] for holding in portfolio }
-print(uniqueNames)
+    for name, items in itertools.groupby(portfolio, key=lambda holding: holding['name']):
+        print('NAME: ', name)
+        for it in items:
+            print('     ', it)
