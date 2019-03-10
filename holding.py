@@ -11,6 +11,14 @@ class Holding(object):
     def sell(self, nshares):
         self.shares -= nshares
 
+    # Meant for developers
+    def __repr__(self):
+        return 'Holding({!r},{!r},{!r},{!r})',format(self.name, self.date, self.shares, self.price)
+
+    def __str__(self):
+        return '{} shares of {} at ${:0.2f}'.format(self.shares, self.name, self.price)
+
+
 import csv
 
 def read_portfolio(filename):
