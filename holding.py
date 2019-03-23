@@ -1,32 +1,16 @@
-import datetime
+from validate import Integer, Float, CsvDate
 
 
 class Holding(object):
+    shares = Integer('shares')
+    price = Float('price')
+    date = CsvDate('date')
+
     def __init__(self, name, date, shares, price):
-        if Holding.check_date(date):
-            self._date = date
+        self.date = date
         self.name = name
         self.shares = shares
-        self._price = price
-
-    @property
-    def price(self):
-        return self._price
-
-    @price.setter
-    def price(self, value):
-        if not isinstance(value, float):
-            raise TypeError('Expected Float')
-        self._price = value
-
-    @property
-    def date(self):
-        return self._date
-
-    @date.setter
-    def date(self, newvalue):
-        if Holding.check_date(newvalue):
-            self._date = newvalue
+        self.price = price
 
     def cost(self):
         return self.shares * self.price
@@ -34,22 +18,12 @@ class Holding(object):
     def sell(self, nshares):
         self.shares -= nshares
 
-    # Internal methods
-    @staticmethod
-    def check_date(datevalue):
-        try:
-            do = datetime.datetime.strptime(datevalue, '%Y-%m-%d')
-            return True
-        except ValueError:
-            raise ValueError('Expected date string in format "yyyy-mm-dd" but was {}'.format(datevalue))
-
     # Meant for developers
     def __repr__(self):
         return 'Holding({!r},{!r},{!r},{!r})'.format(self.name, self.date, self.shares, self.price)
 
     def __str__(self):
         return '{} shares of {} at ${:0.2f}'.format(self.shares, self.name, self.price)
-
 
 import csv
 
