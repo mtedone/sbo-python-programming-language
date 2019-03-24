@@ -1,10 +1,11 @@
-from validate import Integer, Float, CsvDate
+from validate import Integer, Float, CsvDate, String
 
 
 class Holding(object):
     shares = Integer('shares')
     price = Float('price')
     date = CsvDate('date')
+    name = String('name')
 
     def __init__(self, name, date, shares, price):
         self.date = date
